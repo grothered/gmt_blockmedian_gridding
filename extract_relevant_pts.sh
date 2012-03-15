@@ -16,14 +16,17 @@ filename=blanche_bay_points.xyz
 echo "Easting Northing Elevation File" > $filename
 
 # Move into the data directory and do the extraction Note that we do not
-# accept points from the 'gdat_XXXX' files, because these points seem clearly
-# wrong in places.
+# accept points from the 'gdat_XXXX' or 'bin_250XXXX' files, because some of these points seem
+# clearly wrong in places (i.e. on land), and they had an irregular coverage
+# anyway
 cd $datadir
-file_counter=0
+#file_counter=0
 for i in *.xyz;
-    do cat $i | awk '$1>152.0438 && $1<152.5 && $2>-4.3701 && $2<-3.9999' | awk '{print $1,$2,$3, ENVIRON["i"]}'| awk '!/gdat/' >> $mydir/$filename
+    #do echo $i;
+    do cat $i | gawk '$1>152.0438 && $1<152.5 && $2>-4.3701 && $2<-3.9999' | gawk -v f=$i '{print $1,$2,$3, f}'| grep -v 'gdat'| grep -v 'bin' >> $mydir/$filename
     done
 
 # Go back to the initial directory
 cd $mydir
 
+# After this, we can call 'blockmedians.sh' to grid the points around Rabaul
