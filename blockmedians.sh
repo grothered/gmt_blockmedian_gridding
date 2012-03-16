@@ -41,6 +41,15 @@ awk 'NR>1 {if($3 > 0){print $1, $2, $3*(-1)}else{print $1, $2, $3}}' $infile | b
 # Now we grid the decimated data
 awk 'NR>1' $outfile_xyz | xyz2grd -G$outfile_grd -R$outfilewesn -I$outfile_gridsize
 
+# Example plot using GMT -- first make a colortable, then do the plot. This is not a good one though
+#grd2cpt gridded_pomeo_bay.grd -Cwysiwyg -Z > cols.cpt
+#grdimage gridded_pomeo_bay.grd -Ccols.cpt -Jm10i -B0.09 -R$outfile_wesn > gmtgrdimage.ps
+# Failed attempt to automatically pick the range of the plot
+###outfile_xyz=pomeo_bay_gridded.xyz
+###grdimagerange=${minmax -I0.01 $outfile_xyz}
+###grdimage gridded_pomeo_bay.grd -Ccols.cpt -Jm10i -B0.09 $grdimagerange > gmtgrdimage.ps
+
+
 # Now, we have to convert this .nc file to a .tif for it to display correctly in QGIS (otherwise it flips). 
 # I think this is a reported bug with an old version of gdal, which is still being used in the QGIS import.
 gdal_translate -a_srs EPSG:4326 $outfile_grd $outfile_tif
