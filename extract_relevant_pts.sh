@@ -12,6 +12,7 @@
 mydir=$(pwd)
 datadir="/media/Windows7_OS/Users/Gareth/Documents/work/png/PNG/PMD_bathymetry/dir_-2.-8.149.155/xyz_data/"
 filename=blanche_bay_points.xyz
+#filename=pomeo_points.xyz
 
 echo "Easting Northing Elevation File" > $filename
 
