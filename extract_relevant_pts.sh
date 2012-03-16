@@ -11,6 +11,7 @@
 
 mydir=$(pwd)
 datadir="/media/Windows7_OS/Users/Gareth/Documents/work/png/PNG/PMD_bathymetry/dir_-2.-8.149.155/xyz_data/"
+
 #filename=blanche_bay_points.xyz
 #outfile_wesn=152.0438/152.5/-4.3701/-3.9999
 filename=pomeo_points.xyz
