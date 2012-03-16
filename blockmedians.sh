@@ -1,6 +1,7 @@
-# This script converts scatterd xyz points to a raster, by first applying
-# 'blockmedian', and then rasterising. It produces several output files (xyz,
-# .grd and .tif of the blockmedian points).
+# This script converts scatterd xyz points to a raster (all in geographic WGS
+# 84 projection), by first applying 'blockmedian', and then rasterising. It
+# produces several output files (xyz, .grd and .tif of the blockmedian points,
+# and a UTM tif).
 
 # Filename parameters
 infile=blanche_bay_points.xyz
@@ -13,19 +14,23 @@ outfile_utm_tif=gridded_rabaul_UTM.tif
 outfile_wesn=152.148/152.200/-4.311/-4.199 
 outfile_gridsize=100e
 
+# 
+#infile=pomeo_points.xyz
+
+
 ###############
 #
 # MAIN SCRIPT
 #
 ##############
 
+# Make file header
 echo -e 'Easting\t Northing\t Elevation' > $outfile_xyz
 
-# Note we use awk to print only the first 3 columns, and skip the header
+# Blockmedian the input data. Use awk to print only the first 3 columns, and skip the header
 awk 'NR>1 {print $1, $2, $3}' $infile | blockmedian -R$outfile_wesn -I$outfile_gridsize -C -fo >> $outfile_xyz
 
 # Now we grid the decimated data
-#awk 'NR>1' $outfile | nearneighbor -Gnearneighbourbathy.grd -R152.148/152.236/-4.311/-4.199 -I50e -S100e
 awk 'NR>1' $outfile_xyz | xyz2grd -G$outfile_grd -R$outfilewesn -I$outfile_gridsize
 
 # Now, we have to convert this .nc file to a .tif for it to display correctly in QGIS (otherwise it flips). 
